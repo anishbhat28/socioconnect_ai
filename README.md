@@ -1,6 +1,6 @@
 # SocioConnect AI: Immigrant Community Growth Prediction
 
-Predict where immigrant communities will form and grow in the next 1-3 years, then match those places with nearby immigrant-owned or culturally relevant businesses.
+Predict where immigrant communities will form/grow in the next 1-3 years and then match those places with nearby immigrant-owned or culturally relevant businesses.
 
 ## Overview
 
