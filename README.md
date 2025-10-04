@@ -17,7 +17,7 @@ This system uses official US government data sources to:
 - **IRS Migration**: County-to-county migration flows
 - **ORR**: Refugee admissions and placement data
 - **USCIS/DHS**: Naturalizations, visas, asylum grants
-- **CBP**: Business establishment counts by industry
+- **CBP**: Business establishment by industry
 - **SBA DSBS**: Small business directory with firm names and locations
 
 ## Key Features
@@ -57,10 +57,3 @@ socioconnect_ai/
 ├── data/                # Raw and processed data
 └── docs/                # Documentation and model cards
 ```
-
-## Ethics & Privacy
-
-- **Aggregation only**: No individual-level inference
-- **Bias monitoring**: Regular audits across origin groups and income levels
-- **Transparency**: Model cards and explainability features
-- **Opt-in**: User consent for personalized recommendations
