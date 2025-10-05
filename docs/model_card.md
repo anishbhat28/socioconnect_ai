@@ -1,6 +1,6 @@
 
 
-### Key Components
+### Key Components of SCAI
 
 1. **Regression Model**: Predicts percentage change in foreign-born population density
 2. **Classification Model**: Predicts whether a tract will become a new immigrant hotspot
@@ -55,7 +55,7 @@
 - **Algorithm**: LightGBM Classifier with Isotonic Calibration
 - **Objective**: Predict whether tract becomes immigrant hotspot
 - **Threshold**: Density ≥50 per 1,000 pop AND growth ≥25%
-- **Features**: Same as regression model
+- **Features**: same as regression model
 - **Cross-Validation**: 5-fold spatial cross-validation
 - **Hyperparameters**:
   - n_estimators: 1000
