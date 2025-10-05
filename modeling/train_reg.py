@@ -12,6 +12,7 @@ from sklearn.model_selection import GroupKFold, TimeSeriesSplit
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
 from lightgbm import LGBMRegressor
+import lightgbm as lgb
 import shap
 import joblib
 import warnings
@@ -43,11 +44,16 @@ class ImmigrantGrowthRegressor:
             'max_depth': -1,
             'subsample': 0.8,
             'colsample_bytree': 0.8,
-            'objective': 'regression',
+            'objective': 'huber',
+            'alpha': 0.85,
             'metric': 'mae',
             'random_state': 42,
             'n_jobs': -1,
-            'verbosity': -1
+            'verbosity': -1,
+            'num_leaves': 64,
+            'min_child_samples': 40,
+            'reg_alpha': 0.1,
+            'reg_lambda': 0.2
         }
         
         # Feature categories
@@ -191,6 +197,8 @@ class ImmigrantGrowthRegressor:
         # Prepare data
         X = df[feature_cols].fillna(0)
         y = df[target_col].fillna(0)
+        # Clip extreme growth rates to reduce target outlier impact
+        y = y.clip(lower=np.percentile(y, 1), upper=np.percentile(y, 99))
         
         # Remove infinite values
         X = X.replace([np.inf, -np.inf], 0)
@@ -217,7 +225,7 @@ class ImmigrantGrowthRegressor:
             model.fit(
                 X_train, y_train,
                 eval_set=[(X_val, y_val)],
-                callbacks=[lgb.early_stopping(100), lgb.log_evaluation(0)]
+                callbacks=[lgb.early_stopping(100), lgb.log_evaluation(50)]
             )
             
             # Predictions
@@ -302,7 +310,7 @@ class ImmigrantGrowthRegressor:
         logger.info(f"Training complete for {len(models)} origin groups")
         return models
     
-    def evaluate_model(self, model_results: Dict, df: pd.DataFrame, origin_group: str) -> Dict:
+    def evaluate_model(self, model_results: Dict, df: pd.DataFrame, origin_group: str, horizon: int = 2) -> Dict:
         """Evaluate model performance with detailed metrics."""
         logger.info(f"Evaluating model for {origin_group}")
         
@@ -317,7 +325,7 @@ class ImmigrantGrowthRegressor:
         y_pred = model.predict(X)
         
         # Calculate additional metrics
-        y_true = df[f'{origin_group}_growth_2yr']  # Assuming 2-year horizon
+        y_true = df[f'{origin_group}_growth_{horizon}yr']
         
         # Error by population size
         pop_buckets = pd.qcut(df['total_pop'], q=5, labels=['Very Small', 'Small', 'Medium', 'Large', 'Very Large'])

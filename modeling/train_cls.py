@@ -8,13 +8,14 @@ import numpy as np
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 import logging
-from sklearn.model_selection import GroupKFold
+from sklearn.model_selection import GroupKFold, StratifiedGroupKFold
 from sklearn.metrics import (
     roc_auc_score, precision_recall_curve, average_precision_score,
     classification_report, confusion_matrix, brier_score_loss
 )
 from sklearn.calibration import CalibratedClassifierCV
 from lightgbm import LGBMClassifier
+import lightgbm as lgb
 import shap
 import joblib
 import warnings
@@ -51,7 +52,11 @@ class ImmigrantHotspotClassifier:
             'random_state': 42,
             'n_jobs': -1,
             'verbosity': -1,
-            'class_weight': 'balanced'
+            'class_weight': 'balanced',
+            'num_leaves': 64,
+            'min_child_samples': 50,
+            'reg_alpha': 0.1,
+            'reg_lambda': 0.2
         }
         
         # Hotspot thresholds
@@ -231,7 +236,8 @@ class ImmigrantHotspotClassifier:
         model = LGBMClassifier(**self.model_params)
         
         # Cross-validation
-        gkf = GroupKFold(n_splits=5)
+        # Stratified by label while respecting groups to stabilize ROC-AUC under imbalance
+        gkf = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
         cv_scores = []
         models = []
         
@@ -245,7 +251,7 @@ class ImmigrantHotspotClassifier:
             model.fit(
                 X_train, y_train,
                 eval_set=[(X_val, y_val)],
-                callbacks=[lgb.early_stopping(100), lgb.log_evaluation(0)]
+                callbacks=[lgb.early_stopping(100), lgb.log_evaluation(50)]
             )
             
             # Predictions
@@ -337,7 +343,7 @@ class ImmigrantHotspotClassifier:
         logger.info(f"Training complete for {len(models)} origin groups")
         return models
     
-    def evaluate_model(self, model_results: Dict, df: pd.DataFrame, origin_group: str) -> Dict:
+    def evaluate_model(self, model_results: Dict, df: pd.DataFrame, origin_group: str, horizon: int = 2) -> Dict:
         """Evaluate model performance with detailed metrics."""
         logger.info(f"Evaluating model for {origin_group}")
         
@@ -353,7 +359,7 @@ class ImmigrantHotspotClassifier:
         y_pred = model.predict(X)
         
         # True labels
-        y_true = df[f'{origin_group}_hotspot_2yr']  # Assuming 2-year horizon
+        y_true = df[f'{origin_group}_hotspot_{horizon}yr']
         
         # Calculate metrics
         roc_auc = roc_auc_score(y_true, y_pred_proba)
@@ -384,9 +390,9 @@ class ImmigrantHotspotClassifier:
         return evaluation
     
     def get_hotspot_predictions(self, df: pd.DataFrame, origin_group: str, 
-                              threshold: float = 0.5) -> pd.DataFrame:
+                              threshold: float = 0.5, horizon: int = 2) -> pd.DataFrame:
         """Get hotspot predictions for new data."""
-        model_path = self.model_dir / f"classification_{origin_group}_2yr.pkl"
+        model_path = self.model_dir / f"classification_{origin_group}_{horizon}yr.pkl"
         
         if not model_path.exists():
             raise FileNotFoundError(f"Model not found: {model_path}")
