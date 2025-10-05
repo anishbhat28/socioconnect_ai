@@ -4,22 +4,6 @@
 
 The SocioConnect AI API provides endpoints for predicting immigrant community growth and recommending culturally relevant businesses. The API is built with FastAPI and provides both REST endpoints and interactive documentation.
 
-## Base URL
-
-```
-https://api.socioconnect.ai/v1
-```
-
-## Authentication
-
-Currently, the API does not require authentication. In production, API keys will be required.
-
-## Rate Limits
-
-- **Free Tier**: 100 requests per hour
-- **Premium Tier**: 1,000 requests per hour
-- **Enterprise**: Custom limits
-
 ## Endpoints
 
 ### 1. Get API Information
