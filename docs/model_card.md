@@ -1,40 +1,10 @@
-# Model Card: Immigrant Community Growth Prediction
 
-## Model Overview
-
-**Model Name**: SocioConnect AI - Immigrant Community Growth Prediction  
-**Version**: 1.0.0  
-**Date**: December 2024  
-**Model Type**: Ensemble (Regression + Classification)  
-**Task**: Predict immigrant community formation and growth at census tract level  
-
-## Model Description
-
-This model predicts where immigrant communities will form and grow in the next 1-3 years by origin group (e.g., India, Mexico, China), then matches those places with nearby immigrant-owned or culturally relevant businesses.
 
 ### Key Components
 
 1. **Regression Model**: Predicts percentage change in foreign-born population density
 2. **Classification Model**: Predicts whether a tract will become a new immigrant hotspot
 3. **Business Matching System**: Connects predicted hotspots with culturally relevant businesses
-
-## Intended Use
-
-### Primary Use Cases
-
-- **Urban Planning**: Help cities prepare for immigrant community growth
-- **Business Development**: Identify opportunities for culturally relevant businesses
-- **Community Services**: Plan language services, cultural centers, and support programs
-- **Real Estate**: Understand housing demand patterns by immigrant communities
-- **Policy Making**: Inform immigration and integration policies
-
-### Target Users
-
-- Urban planners and city officials
-- Business developers and entrepreneurs
-- Community organizations
-- Real estate professionals
-- Policy makers and researchers
 
 ## Training Data
 
@@ -204,32 +174,6 @@ This model predicts where immigrant communities will form and grow in the next 1
 - **Bias Drift**: Monitor fairness metrics
 - **Business Impact**: Track recommendation effectiveness
 
-## Contact Information
-
-**Model Developers**: SocioConnect AI Team  
-**Email**: contact@socioconnect.ai  
-**Repository**: https://github.com/socioconnect/immigrant-growth-prediction  
-**Documentation**: https://docs.socioconnect.ai  
-
 ## License
 
 This model is licensed under the MIT License. See LICENSE file for details.
-
-## Citation
-
-If you use this model in your research, please cite:
-
-```
-SocioConnect AI. (2024). Immigrant Community Growth Prediction Model. 
-Version 1.0.0. https://github.com/socioconnect/immigrant-growth-prediction
-```
-
-## Changelog
-
-### Version 1.0.0 (December 2024)
-- Initial release
-- Support for 20 origin groups
-- Regression and classification models
-- Business matching system
-- API endpoints
-- Model cards and documentation
