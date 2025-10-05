@@ -25,14 +25,14 @@ from modeling.train_cls import ImmigrantHotspotClassifier
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Initialize FastAPI app
+
 app = FastAPI(
     title="SocioConnect AI API",
     description="Predict immigrant community growth and recommend culturally relevant businesses",
     version="1.0.0"
 )
 
-# Add CORS middleware
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -41,7 +41,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize components
+
 business_matcher = BusinessMatcher()
 regressor = ImmigrantGrowthRegressor()
 classifier = ImmigrantHotspotClassifier()
@@ -143,14 +143,14 @@ async def predict_hotspots(request: HotspotPredictionRequest):
     try:
         logger.info(f"Predicting hotspots for {request.origin_group}")
         
-        # Load hotspot predictions (in practice, this would use trained models)
+        
         hotspots_df = business_matcher.load_hotspot_predictions(request.origin_group)
         
-        # Filter by probability threshold
+        
         prob_col = f'{request.origin_group}_hotspot_prob'
         high_prob_hotspots = hotspots_df[hotspots_df[prob_col] >= request.min_probability]
         
-        # Sort by probability and limit results
+        
         high_prob_hotspots = high_prob_hotspots.sort_values(prob_col, ascending=False)
         high_prob_hotspots = high_prob_hotspots.head(request.limit)
         
@@ -184,7 +184,7 @@ async def recommend_businesses(request: BusinessRecommendationRequest):
         logger.info(f"Getting business recommendations for {request.origin_group} at "
                    f"({request.latitude}, {request.longitude})")
         
-        # Get recommendations
+       
         recommendations_df = business_matcher.get_recommendations(
             user_lat=request.latitude,
             user_lon=request.longitude,
@@ -201,13 +201,13 @@ async def recommend_businesses(request: BusinessRecommendationRequest):
                 total_found=0
             )
         
-        # Filter by business categories if specified
+        
         if request.business_categories:
             recommendations_df = recommendations_df[
                 recommendations_df['business_category'].isin(request.business_categories)
             ]
         
-        # Convert to response format
+        
         recommendations = []
         for _, row in recommendations_df.iterrows():
             recommendation = BusinessRecommendation(
@@ -245,14 +245,13 @@ async def predict_growth(request: GrowthPredictionRequest):
     try:
         logger.info(f"Predicting growth for {request.origin_group}")
         
-        # Load features data
+       
         features_df = regressor.load_features()
         
-        # Filter by origin group and tract if specified
+       
         if request.tract_geoids:
             features_df = features_df[features_df['tract_geoid'].isin(request.tract_geoids)]
-        
-        # Mock growth predictions (in practice, use trained models)
+
         predictions = []
         for _, row in features_df.iterrows():
             # Mock current density
@@ -296,7 +295,7 @@ async def get_metrics():
         "uptime": "0 days, 0 hours, 0 minutes"  # Would calculate in production
     }
 
-# Error handlers
+
 @app.exception_handler(404)
 async def not_found_handler(request, exc):
     return {"error": "Endpoint not found", "detail": str(exc)}
