@@ -117,13 +117,6 @@
 - **External Factors**: Model doesn't account for policy changes or economic shocks
 - **Causality**: Model predicts correlation, not causation
 
-### Ethical Considerations
-
-- **Privacy**: No individual-level data used
-- **Bias**: Model may perpetuate existing spatial patterns
-- **Fairness**: Performance varies across origin groups and income levels
-- **Transparency**: Model decisions are explainable via SHAP values
-
 ## Bias Analysis
 
 ### Performance by Demographics
@@ -141,22 +134,6 @@
 - **Higher Performance**: Mexico, Philippines (larger sample sizes)
 - **Lower Performance**: Ethiopia, Venezuela (smaller sample sizes)
 - **Bias Mitigation**: Class weighting and calibration used
-
-## Recommendations
-
-### For Users
-
-1. **Interpret Results Carefully**: Model predicts trends, not certainties
-2. **Consider Context**: Results should be combined with local knowledge
-3. **Monitor Performance**: Track prediction accuracy over time
-4. **Use Ensemble**: Combine regression and classification results
-
-### For Developers
-
-1. **Regular Retraining**: Update models quarterly with new data
-2. **Bias Monitoring**: Implement ongoing bias audits
-3. **Feature Engineering**: Continuously improve feature selection
-4. **Validation**: Use spatial cross-validation for robust evaluation
 
 ## Model Maintenance
 
