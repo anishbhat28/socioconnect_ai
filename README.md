@@ -1,13 +1,13 @@
 # SocioConnect AI: Immigrant Community Growth Prediction
 
-Predict where immigrant communities will form/grow in the next 1-3 years and then match those places with nearby immigrant-owned or culturally relevant businesses.
+This project predicts where immigrant communities will form/grow in the next 1-3 years and then match those places with nearby immigrant-owned or culturally relevant businesses.
 
 ## Overview
 
 This system uses official US government data sources to:
-1. **Predict** immigrant community growth at the census tract level
-2. **Match** predicted hotspots with culturally relevant businesses
-3. **Recommend** businesses to families based on their origin group and location
+1. Predict immigrant community growth at the census tract level
+2. Match predicted hotspots with culturally relevant businesses
+3. Recommend businesses to families based on their origin group and location
 
 ## Data Sources
 
@@ -20,15 +20,18 @@ This system uses official US government data sources to:
 - **CBP**: Business establishment by industry
 - **SBA DSBS**: Small business directory with firm names and locations
 
+  These data sources are in the public domain.
+
+
 ## Key Features
 
-- **Spatial-temporal modeling** with census tract-level predictions
-- **Multi-origin support** (India, Mexico, China, etc.)
-- **Business matching** using official SBA data
-- **Fairness-aware** modeling with bias audits
-- **API endpoints** for real-time predictions and recommendations
+- Spatial-temporal modeling with census tract-level predictions
+- Multi-origin support (India, Mexico, China, etc.)
+- Business matching using official SBA data
+- Fairness-aware modeling with bias audits
+- API endpoints for real-time predictions and recommendations
 
-## Quick Start
+## Quick Start Guide 
 
 ```bash
 # Install dependencies
