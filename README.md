@@ -2,6 +2,8 @@
 
 This project predicts where immigrant communities will form/grow in the next 1-3 years and then match those places with nearby immigrant-owned or culturally relevant businesses.
 
+Disclaimer: This project is for my learning and experience ONLY. This is NOT legal advice. 
+
 ## Overview
 
 This system uses official US government data sources to:
@@ -37,15 +39,15 @@ This system uses official US government data sources to:
 # Install dependencies
 pip install -r requirements.txt
 
-# Run ETL pipeline
+# run ETL pipeline
 python -m etl.acs
 python -m etl.features
 
-# Train models
+# model training
 python -m modeling.train_reg
 python -m modeling.train_cls
 
-# Start API server
+# start API server
 python -m api.app
 ```
 
@@ -55,7 +57,7 @@ python -m api.app
 socioconnect_ai/
 ├── etl/                 # Data extraction and transformation
 ├── modeling/            # Machine learning models
-├── business/            # Business matching and tagging
+├── business/            # Business matching
 ├── api/                 # FastAPI endpoints
 ├── data/                # Raw and processed data
 └── docs/                # Documentation and model cards
